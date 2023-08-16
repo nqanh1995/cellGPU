@@ -161,7 +161,10 @@ class Simple2DCell : public Simple2DModel
         int Ncells;
         //!Number of vertices
         int Nvertices;
-
+        // Anh edit, adding shear rate and strain variable
+        GPUArray<double> shear_rate;
+        double gamma; 
+        
         //! Cell positions... not used for computation, but can track, e.g., MSD of cell centers
         GPUArray<double2> cellPositions;
         //! Position of the vertices
