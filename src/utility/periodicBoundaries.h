@@ -2,6 +2,7 @@
 #define PERIODICBOX_H
 
 #include "std_include.h"
+#include <cmath>
 
 #ifdef NVCC
 #define HOSTDEVICE __host__ __device__ inline
@@ -61,6 +62,8 @@ struct periodicBoundaries
             other.getBoxDims(b11,b12,b21,b22);
             setGeneral(b11,b12,b21,b22);
             };
+        double gamma;
+        double shear_rate;
     protected:
         //!The transformation matrix defining the periodic box
         double x11,x12,x21,x22;//the transformation matrix defining the box
@@ -138,18 +141,29 @@ void periodicBoundaries::putInBoxReal(double2 &p1)
 
 void periodicBoundaries::putInBox(double2 &vp)
     {//acts on points in the virtual space
+    if (vp.y < 0) 
+    {   
+        vp.x += gamma*floor(vp.y);
+        vp.y -= floor(vp.y);
+    }
+    
+    else if (vp.y>=1.)
+    {
+        vp.x += gamma*floor(vp.y);
+        vp.y -= floor(vp.y);
+    }
+    else
+    {
+        vp.x += shear_rate*vp.y-0.5;
+    }
     while(vp.x < 0) vp.x +=1.0;
-    while(vp.y < 0) vp.y +=1.0;
 
     while(vp.x>=1.0)
         {
         vp.x -= 1.0;
         };
-    while(vp.y>=1.)
-        {
-        vp.y -= 1.;
-        };
     };
+    
 
 void periodicBoundaries::minDist(const double2 &p1, const double2 &p2, double2 &pans)
     {
