@@ -100,6 +100,7 @@ int main(int argc, char*argv[])
     SimulationPtr sim = make_shared<Simulation>();
     sim->setConfiguration(voronoiModel);
     sim->addUpdater(nvt,voronoiModel);
+    sim->getShearRate(0.01);
     //set the time step size
     sim->setIntegrationTimestep(dt);
     //initialize Hilbert-curve sorting... can be turned off by commenting out this line or seting the argument to a negative number

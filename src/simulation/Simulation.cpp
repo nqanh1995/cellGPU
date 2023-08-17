@@ -150,8 +150,14 @@ Call all relevant functions to advance the system one time step; every sortPerio
 spatial sorting routine.
 \post The simulation is advanced one time step
 */
+void Simulation::getShearRate(double gamma_dot)
+{
+    shear_rate = gamma_dot;
+};
 void Simulation::performTimestep()
     {
+    
+    gamma = integerTimestep*shear_rate;
     integerTimestep += 1;
     Time += integrationTimestep;
 

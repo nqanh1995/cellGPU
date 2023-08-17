@@ -59,7 +59,7 @@ M*v
 void DelaunayCGAL::PeriodicTriangulation(vector<pair<Point,int> > &V, double bxx, double bxy,double byx, double byy)
     {
     if (bxy == 0 && byx == 0 && bxx == byy)
-        PeriodicTriangulationSquareDomain(V,bxx,byy);
+        PeriodicTriangulationNineSheeted(V,bxx,bxy,byx,byy);
     else
         PeriodicTriangulationNineSheeted(V,bxx,bxy,byx,byy);
     };

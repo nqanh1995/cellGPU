@@ -22,7 +22,8 @@ class Simulation : public enable_shared_from_this<Simulation>
         Simulation();
         //!Pass in a reference to the configuration
         void setConfiguration(ForcePtr _config);
-
+        // getting shear rate
+        void getShearRate(double gamma_dot);
         //!Call the force computer to compute the forces
         void computeForces(GPUArray<double2> &forces);
         //!Call the configuration to move particles around

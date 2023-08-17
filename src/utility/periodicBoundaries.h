@@ -141,21 +141,18 @@ void periodicBoundaries::putInBoxReal(double2 &p1)
 
 void periodicBoundaries::putInBox(double2 &vp)
     {//acts on points in the virtual space
-    if (vp.y < 0) 
+    while (vp.y < 0) 
     {   
-        vp.x += gamma*floor(vp.y);
+        vp.x -= gamma*floor(vp.y);
         vp.y -= floor(vp.y);
-    }
+    };
     
-    else if (vp.y>=1.)
+    while (vp.y>=1.)
     {
-        vp.x += gamma*floor(vp.y);
+        vp.x -= gamma*floor(vp.y);
         vp.y -= floor(vp.y);
-    }
-    else
-    {
-        vp.x += shear_rate*vp.y-0.5;
-    }
+    };
+    
     while(vp.x < 0) vp.x +=1.0;
 
     while(vp.x>=1.0)
@@ -164,17 +161,29 @@ void periodicBoundaries::putInBox(double2 &vp)
         };
     };
     
-
+// making mindist work with shifted box
 void periodicBoundaries::minDist(const double2 &p1, const double2 &p2, double2 &pans)
     {
     if (isSquare)
         {
-        pans.x = p1.x-p2.x;
-        pans.y = p1.y-p2.y;;
-        while(pans.x < -halfx11) pans.x += x11;
-        while(pans.y < -halfx22) pans.y += x22;
-        while(pans.x > halfx11) pans.x -= x11;
-        while(pans.y > halfx22) pans.y -= x22;
+            pans.x = p1.x-p2.x;
+            pans.y = p1.y-p2.y;
+            while (pans.y > x22/2)
+            {
+                pans.x = pans.x-gamma*x11;
+                pans.y -= x22;
+            };
+
+            while (pans.y<-x22/2)
+            {   
+                pans.x = pans.x + gamma*x11;
+                pans.y += x22;
+            };
+
+            while(pans.x < -halfx11) pans.x += x11;
+            while(pans.x > halfx11) pans.x -= x11;
+        // while(pans.y < -halfx22) pans.y += x22;
+        // while(pans.y > halfx22) pans.y -= x22;
         }
     else
         {
